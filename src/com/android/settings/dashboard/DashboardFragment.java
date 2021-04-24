@@ -309,6 +309,14 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
         addPreferencesFromResource(resId);
         final PreferenceScreen screen = getPreferenceScreen();
         screen.setOnExpandButtonClickListener(this);
+        displayResourceTilesToScreen(screen);
+    }
+
+    /**
+     * Perform {@link AbstractPreferenceController#displayPreference(PreferenceScreen)}
+     * on all {@link AbstractPreferenceController}s.
+     */
+    protected void displayResourceTilesToScreen(PreferenceScreen screen) {
         mPreferenceControllers.values().stream().flatMap(Collection::stream).forEach(
                 controller -> controller.displayPreference(screen));
     }
@@ -368,6 +376,7 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
         }
 
         updatePreferenceVisibility(mPreferenceControllers);
+        updateCategoryVisibility();
     }
 
     @VisibleForTesting
@@ -390,6 +399,10 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
             }
         }
     }
+
+    // declaring abstract would be better but requires too many classes to be modified, so just
+    // make it public and don't do anything in the default case
+    public void updateCategoryVisibility() { }
 
     /**
      * Refresh preference items backed by DashboardCategory.
